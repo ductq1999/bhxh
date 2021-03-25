@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 
 @Data
 @Entity
-@Table(name="enterprise", uniqueConstraints = { @UniqueConstraint(columnNames = { "tax_code" }) })
+@Table(name="enterprise")
 public class Enterprise implements Serializable{
 
 	/**

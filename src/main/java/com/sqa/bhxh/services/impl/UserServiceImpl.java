@@ -1,6 +1,6 @@
 package com.sqa.bhxh.services.impl;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,9 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 		}
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
 	}
-	
-	@SuppressWarnings("rawtypes")
-	private List getAuthority(User user) {
-		return Arrays.asList(new SimpleGrantedAuthority(user.getRole()));
+
+	private List<SimpleGrantedAuthority> getAuthority(User user) {
+		return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
 	}
 
 }

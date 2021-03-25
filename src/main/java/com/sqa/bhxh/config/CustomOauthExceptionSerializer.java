@@ -10,17 +10,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthException>{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    protected CustomOauthExceptionSerializer() {
+        super(CustomOauthException.class);
+        // TODO Auto-generated constructor stub
+    }
 
-	protected CustomOauthExceptionSerializer() {
-		super(CustomOauthException.class);
-		// TODO Auto-generated constructor stub
-	}
-	
-	@Override
+    @Override
     public void serialize(CustomOauthException value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("code", value.getHttpErrorCode());
@@ -36,5 +31,5 @@ public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthExc
         }
         jsonGenerator.writeEndObject();
     }
-	
+
 }

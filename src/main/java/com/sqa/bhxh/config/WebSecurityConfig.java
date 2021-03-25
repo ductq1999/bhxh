@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	/*
 	 * @Bean public AuthenticationSuccessHandler authenticationSuccessHandler() {
 	 * return new RestAuthenticationSuccessHandler(); }
-	 * 
+	 *
 	 * @Bean public AccessDeniedHandler accessDeniedHandler() { return new
 	 * RestAccessDeniedHandler(); }
 	 */
@@ -62,21 +62,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().anonymous().disable().authorizeRequests()
-		.antMatchers("/api-docs/**").permitAll()
-		.antMatchers("/public/**").permitAll()
-		.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
+				.antMatchers("/api-docs/**").permitAll()
+				.antMatchers("/public/**").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll();
 		// add filter
 //		.and()
 //		.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 	}
-	
+
 	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api-docs/**");
-        web.ignoring().antMatchers("/public/**");
+	public void configure(WebSecurity web) {
+		web.ignoring().antMatchers("/api-docs/**");
+		web.ignoring().antMatchers("/public/**");
 //        web.ignoring().antMatchers("/oauth/**");
-        web.ignoring().antMatchers("/actuator/**");
-    }
+		web.ignoring().antMatchers("/actuator/**");
+	}
 
 	@Bean
 	public FilterRegistrationBean<CorsFilter> corsFilter() {
@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
-		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}

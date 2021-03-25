@@ -12,20 +12,20 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
-	
+
 	@Value("${security.oath2.resource-id}")
 	private String RESOURCE_ID;
-	
+
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) {
 		resources.resourceId(RESOURCE_ID).stateless(false);
 	}
-	
+
 	@Bean
 	public AuthenticationFailureHandler authenticationFailureHandler() {
 		return new RestAuthenticationFailureHandler();
 	}
-	
+
 	@Bean
 	RestAccessDeniedHandler accessDeniedHandler() {
 		return new RestAccessDeniedHandler();
@@ -35,15 +35,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	RestAuthenticationEntryPoint authenticationEntryPoint() {
 		return new RestAuthenticationEntryPoint();
 	}
-	
+
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.anonymous().disable()
-		.authorizeRequests()
-		.antMatchers("/user/**").access("hasRole('CANHAN')")
-		.anyRequest().authenticated()
-		.and()
-		.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-		.authenticationEntryPoint(authenticationEntryPoint());
+				.authorizeRequests()
+//		.antMatchers("/user/**").access("hasRole('ADMIN')")
+				.anyRequest().authenticated()
+				.and()
+				.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+				.authenticationEntryPoint(authenticationEntryPoint());
 	}
 }
