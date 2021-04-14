@@ -1,15 +1,15 @@
 package com.sqa.bhxh.controller;
 
 import com.sqa.bhxh.entities.Enterprise;
-import com.sqa.bhxh.entities.SocialInsurance;
 import com.sqa.bhxh.helper.ApiResponse;
 import com.sqa.bhxh.services.EnterpriseService;
-import com.sqa.bhxh.services.SocialInsuranceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("enterprise")
@@ -22,10 +22,12 @@ public class EnterpriseController {
     @GetMapping("get-all")
     public ResponseEntity<ApiResponse> getAllSocialInsurance() {
         ApiResponse object = new ApiResponse();
+        List<Enterprise> enterpriseList = enterpriseService.getAll();
         object.setCode(200);
         object.setErrors(null);
         object.setStatus(true);
-        object.setData(enterpriseService.getAll());
+        object.setData(enterpriseList);
+        object.setPageSize(enterpriseList.size());
         return new ResponseEntity<>(object, HttpStatus.OK);
     }
 

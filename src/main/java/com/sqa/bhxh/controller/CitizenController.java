@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("citizen")
 @CrossOrigin(origins= {"*"})
@@ -22,10 +24,12 @@ public class CitizenController {
     @GetMapping("get-all")
     public ResponseEntity<ApiResponse> getAll() {
         ApiResponse object = new ApiResponse();
+        List<Citizen> citizenList = citizenService.getAll();
         object.setCode(200);
         object.setErrors(null);
         object.setStatus(true);
-        object.setData(citizenService.getAll());
+        object.setPageSize(citizenList.size());
+        object.setData(citizenList);
         return new ResponseEntity<>(object, HttpStatus.OK);
     }
 

@@ -33,9 +33,5 @@ public class Enterprise implements Serializable{
 	 @OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "user_id")
 	 private User user;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "social_insurance")
-	private SocialInsurance socialInsurance;
 	 
 }
