@@ -26,7 +26,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     public Enterprise create(Enterprise enterprise) {
         Enterprise check = enterpriseRepository.findByTaxCode(enterprise.getTaxCode());
         if (check != null) {
-            throw new BadRequestException("Da ton tai");
+           return null;
         }
         return enterpriseRepository.save(enterprise);
     }
@@ -35,7 +35,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Transactional
     public Enterprise update(Enterprise enterprise) throws Exception {
         if (enterpriseRepository.findById(enterprise.getId()) == null) {
-            throw new NotFoundException("khong ton tai");
+            return null;
         }
 
         return enterpriseRepository.save(enterprise);

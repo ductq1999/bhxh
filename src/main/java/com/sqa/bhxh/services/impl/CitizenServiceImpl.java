@@ -26,7 +26,7 @@ public class CitizenServiceImpl implements CitizenService {
     public Citizen create(Citizen citizen) {
         Citizen check = citizenRepository.findByIdentityNumber(citizen.getIdentityNumber());
         if (check != null) {
-            throw new BadRequestException("Da ton tai");
+            return null;
         }
         return citizenRepository.save(citizen);
     }
@@ -35,7 +35,7 @@ public class CitizenServiceImpl implements CitizenService {
     @Transactional
     public Citizen update(Citizen citizen) throws Exception {
         if (citizenRepository.findById(citizen.getId()) == null) {
-            throw new NotFoundException("khong ton tai");
+            return null;
         }
 
         return citizenRepository.save(citizen);

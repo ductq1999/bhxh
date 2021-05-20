@@ -38,9 +38,13 @@ public class CitizenController {
             @RequestBody Citizen citizen
     ) {
         ApiResponse object = new ApiResponse();
-        object.setCode(201);
+        if (citizenService.create(citizen) != null) {
+            object.setCode(201);
+        } else {
+            object.setCode(400);
+        }
         object.setErrors(null);
-        object.setStatus(true);
+        object.setStatus(false);
         object.setData(citizenService.create(citizen));
         return new ResponseEntity<>(object, HttpStatus.CREATED);
     }
@@ -50,7 +54,11 @@ public class CitizenController {
             @RequestBody Citizen citizen
     ) throws Exception {
         ApiResponse object = new ApiResponse();
-        object.setCode(200);
+        if (citizenService.update(citizen) != null) {
+            object.setCode(200);
+        } else {
+            object.setCode(404);
+        }
         object.setErrors(null);
         object.setStatus(true);
         object.setData(citizenService.update(citizen));

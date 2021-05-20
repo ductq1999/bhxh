@@ -24,10 +24,6 @@ public class SocialInsuranceServiceImpl implements SocialInsuranceService {
 
     @Override
     public SocialInsurance createSocialInsurance(SocialInsurance socialInsurance) {
-        SocialInsurance check = socialInsuranceRepository.findByNameAndCategory(socialInsurance.getName(), socialInsurance.getCategory());
-        if (check != null) {
-            throw new BadRequestException("Da ton tai");
-        }
         return socialInsuranceRepository.save(socialInsurance);
     }
 
@@ -35,7 +31,7 @@ public class SocialInsuranceServiceImpl implements SocialInsuranceService {
     @Transactional
     public SocialInsurance updateSocialInsurance(SocialInsurance socialInsurance) throws Exception {
         if (socialInsuranceRepository.findById(socialInsurance.getId()) == null) {
-            throw new NotFoundException("khong ton tai");
+          return null;
         }
 
         return socialInsuranceRepository.save(socialInsurance);

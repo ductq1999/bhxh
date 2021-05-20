@@ -36,7 +36,11 @@ public class EnterpriseController {
             @RequestBody Enterprise enterprise
     ) {
         ApiResponse object = new ApiResponse();
-        object.setCode(201);
+        if (enterpriseService.create(enterprise) != null) {
+            object.setCode(201);
+        } else {
+            object.setCode(400);
+        }
         object.setErrors(null);
         object.setStatus(true);
         object.setData(enterpriseService.create(enterprise));
@@ -48,7 +52,11 @@ public class EnterpriseController {
             @RequestBody Enterprise enterprise
     ) throws Exception {
         ApiResponse object = new ApiResponse();
-        object.setCode(200);
+        if(enterpriseService.update(enterprise) != null) {
+            object.setCode(200);
+        } else {
+            object.setCode(404);
+        }
         object.setErrors(null);
         object.setStatus(true);
         object.setData(enterpriseService.update(enterprise));

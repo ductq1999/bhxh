@@ -44,7 +44,11 @@ public class SocialInsuranceController {
             @RequestBody SocialInsurance socialInsurance
     ) throws Exception {
         ApiResponse object = new ApiResponse();
-        object.setCode(200);
+        if (socialInsuranceService.updateSocialInsurance(socialInsurance) != null) {
+            object.setCode(200);
+        } else {
+            object.setCode(404);
+        }
         object.setErrors(null);
         object.setStatus(true);
         object.setData(socialInsuranceService.updateSocialInsurance(socialInsurance));
