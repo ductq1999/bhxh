@@ -29,6 +29,9 @@ public class Citizen {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "is_payment")
+    private Integer isPayment; // 1 da dong, 0 chua dong
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
@@ -64,5 +67,8 @@ public class Citizen {
 
     @Column(name = "pc7")
     private BigDecimal pc7;
+
+    @Column(name = "type")
+    private Integer type; //1- trong nuoc 2- nuoc ngoai
 
 }
