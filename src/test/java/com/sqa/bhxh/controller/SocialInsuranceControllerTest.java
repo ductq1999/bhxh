@@ -55,12 +55,12 @@ public class SocialInsuranceControllerTest {
     @MockBean
     private SocialInsuranceRepository socialInsuranceRepository;
 
-    private String jsonCreateSocialInsurance= "{\n" +
+    private String jsonCreateSocialInsurance = "{\n" +
             "            \"name\": \"1\",\n" +
             "            \"category\": \"abc\"\n" +
             "        }";
 
-    private String jsonUpdateSocialInsurance= "{\n" +
+    private String jsonUpdateSocialInsurance = "{\n" +
             "            \"id\": \"1\",\n" +
             "            \"name\": \"1\",\n" +
             "            \"category\": \"abc\"\n" +
@@ -69,41 +69,43 @@ public class SocialInsuranceControllerTest {
     @Test
     public void testGetListSocialInsuranceSuccess() throws Exception {
         List<SocialInsurance> socialInsurances = new ArrayList<>();
-        for(int i=1;i<5;i++){
+        for (int i = 1; i < 5; i++) {
             SocialInsurance socialInsurance = new SocialInsurance();
             socialInsurance.setId(i);
             socialInsurances.add(socialInsurance);
         }
-        List<SocialInsurance> result =new ArrayList<>(socialInsurances);
+        List<SocialInsurance> result = new ArrayList<>(socialInsurances);
 
-        given(socialInsuranceRepository.findAll()).willReturn( result);
+        given(socialInsuranceRepository.findAll()).willReturn(result);
         mockMvc.perform(get("/social-insurance/get-all"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testCreateSocialInsuranceSuccess()throws Exception{
+    public void testCreateSocialInsuranceSuccess() throws Exception {
         given(socialInsuranceRepository.save(isA(SocialInsurance.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(post("/social-insurance/create")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonCreateSocialInsurance))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("1"));
 
     }
 
     @Test
-    public void testUpdateSocialInsuranceSuccess()throws Exception{
-        SocialInsurance socialInsurance= new SocialInsurance();
+    public void testUpdateSocialInsuranceSuccess() throws Exception {
+        SocialInsurance socialInsurance = new SocialInsurance();
         socialInsurance.setId(1);
         given(socialInsuranceRepository.findById(1)).willReturn(socialInsurance);
         given(socialInsuranceRepository.save(isA(SocialInsurance.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(patch("/social-insurance/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonUpdateSocialInsurance))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("1"));
 
     }
 
     @Test
-    public void testUpdateSocialInsuranceWithNotFoundSocialInsurance()throws Exception{
+    public void testUpdateSocialInsuranceWithNotFoundSocialInsurance() throws Exception {
         given(socialInsuranceRepository.findById("1")).willReturn(Optional.empty());
         given(socialInsuranceRepository.save(isA(SocialInsurance.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(patch("/social-insurance/update")

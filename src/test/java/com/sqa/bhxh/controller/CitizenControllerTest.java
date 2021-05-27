@@ -139,8 +139,8 @@ public class CitizenControllerTest {
         given(citizenRepository.save(isA(Citizen.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(post("/citizen/create")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonCreateCitizen))
-                .andExpect(status().isCreated());
-
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.fullName").value("abc"));
     }
 
     @Test
@@ -151,8 +151,8 @@ public class CitizenControllerTest {
         given(citizenRepository.save(isA(Citizen.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(patch("/citizen/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonUpdateCitizen))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.fullName").value("abc"));
     }
 
     @Test
@@ -162,6 +162,7 @@ public class CitizenControllerTest {
         mockMvc.perform(patch("/citizen/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonUpdateCitizen))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404));
+
 
     }
 }

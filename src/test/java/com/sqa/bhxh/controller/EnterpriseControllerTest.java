@@ -54,7 +54,7 @@ public class EnterpriseControllerTest {
     @MockBean
     private EnterpriseRepository enterpriseRepository;
 
-    private String jsonCreateEnterprise= "{\n" +
+    private String jsonCreateEnterprise = "{\n" +
             "            \"taxCode\": \"1\",\n" +
             "            \"name\": \"abc\",\n" +
             "            \"address\": \"xyz\",\n" +
@@ -65,8 +65,9 @@ public class EnterpriseControllerTest {
             "        }\n" +
             "        }";
 
-    private String  jsonUpdateEnterprise= "{\n" +
+    private String jsonUpdateEnterprise = "{\n" +
             "              \"taxCode\": \"1\",\n" +
+            "              \"id\": \"1\",\n" +
             "            \"taxCode\": \"1\",\n" +
             "            \"name\": \"abc\",\n" +
             "            \"address\": \"xyz\",\n" +
@@ -81,21 +82,21 @@ public class EnterpriseControllerTest {
     @Test
     public void testGetListEnterpriseSuccess() throws Exception {
         List<Enterprise> enterprises = new ArrayList<>();
-        for(int i=1;i<5;i++){
+        for (int i = 1; i < 5; i++) {
             Enterprise enterprise = new Enterprise();
             enterprise.setId(i);
             enterprises.add(enterprise);
         }
-        List<Enterprise> result =new ArrayList<>(enterprises);
+        List<Enterprise> result = new ArrayList<>(enterprises);
 
-        given(enterpriseRepository.findAll()).willReturn( result);
+        given(enterpriseRepository.findAll()).willReturn(result);
         mockMvc.perform(get("/enterprise/get-all"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testCreateEnterpriseWithExistTaxCode()throws Exception{
-        Enterprise enterprise= new Enterprise();
+    public void testCreateEnterpriseWithExistTaxCode() throws Exception {
+        Enterprise enterprise = new Enterprise();
         enterprise.setId(1);
         enterprise.setTaxCode("1");
         given(enterpriseRepository.findByTaxCode("1")).willReturn(enterprise);
@@ -107,28 +108,30 @@ public class EnterpriseControllerTest {
     }
 
     @Test
-    public void testCreateEnterpriseSuccess()throws Exception{
+    public void testCreateEnterpriseSuccess() throws Exception {
         given(enterpriseRepository.save(isA(Enterprise.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(post("/enterprise/create")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonCreateEnterprise))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("abc"));
 
     }
 
     @Test
-    public void testUpdateEnterpriseSuccess()throws Exception{
-        Enterprise enterprise= new Enterprise();
+    public void testUpdateEnterpriseSuccess() throws Exception {
+        Enterprise enterprise = new Enterprise();
         enterprise.setId(1);
         given(enterpriseRepository.findById(1)).willReturn(enterprise);
         given(enterpriseRepository.save(isA(Enterprise.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(patch("/enterprise/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonUpdateEnterprise))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.name").value("abc"));
 
     }
 
     @Test
-    public void testUpdateEnterpriseWithNotFoundEnterprise()throws Exception{
+    public void testUpdateEnterpriseWithNotFoundEnterprise() throws Exception {
         given(enterpriseRepository.findById("1")).willReturn(Optional.empty());
         given(enterpriseRepository.save(isA(Enterprise.class))).willAnswer(i -> i.getArgument(0));
         mockMvc.perform(patch("/enterprise/update")
